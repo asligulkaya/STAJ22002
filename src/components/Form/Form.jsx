@@ -9,7 +9,12 @@ export default function Form() {
           <label htmlFor="name" className="m-3">
             Name:
           </label>
-          <input className="form-control w-75" type="text" placeholder="Name" />
+          <input
+            className={`${classes.nameInput} form-control`}
+            type="text"
+            placeholder="Name"
+            maxLength="50"
+          />
         </div>
         {/* Country Input */}
         <div className="col-12 col-md-9 justify-content-center d-flex align-items-center my-3 p-3">
@@ -18,7 +23,7 @@ export default function Form() {
           </label>
           <select
             id="inputState"
-            className={`${classes.optionGroup} form-control w-75`}
+            className={`${classes.optionGroup} form-control`}
           >
             <option selected>Choose...</option>
             <option>...</option>
@@ -54,7 +59,7 @@ export default function Form() {
           </label>
         </div>
       </div>
-      {/* Message Text Area */}
+      {/* Message Text Area ---- {500 - message.length}*/}
       <div className={classes.messageBox}>
         <div className={classes.fileUploadWrapper}>
           <label htmlFor="file">
@@ -93,7 +98,9 @@ export default function Form() {
           placeholder="Message..."
           className={classes.messageInput}
           rows="3"
+          maxLength="500"
         ></textarea>
+
         <button className={classes.sendButton}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -114,6 +121,7 @@ export default function Form() {
           </svg>
         </button>
       </div>
+      <small className={classes.remainingText}>Remaining Characters:</small>
     </div>
   );
 }

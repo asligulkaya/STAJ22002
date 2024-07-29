@@ -1,5 +1,5 @@
 .formContainer {
-  background-color: #F0EBE3;
+  background: linear-gradient(135deg, #f0ebe3 10%, rgb(243 243 243) 100%);
   border-radius: 10px;
   padding: 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -8,8 +8,9 @@
   align-items: center;
 }
 
+.nameInput,
 .optionGroup {
-  width: 50vh;
+  width: 75%;
 }
 
 .radioButtonContainer {
@@ -37,7 +38,7 @@
   margin-bottom: 10px;
   position: relative;
   font-size: 15px;
-  color: #1e1e1e;
+  color: #4a429c;
   font-weight: 600;
   cursor: pointer;
   text-transform: uppercase;
@@ -51,7 +52,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 2px solid rgb(70, 70, 70);
+  border: 2px solid #4a429c;
   transition: all 0.3s ease;
 }
 
@@ -73,7 +74,7 @@
 }
 
 .messageBox {
-  width: fit-content;
+  width: 75%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -81,8 +82,8 @@
   padding: 10px 15px;
   border-radius: 10px;
   border: 1px solid rgb(200, 200, 200);
-  box-sizing: border-box; 
-  margin-bottom: 5%;
+  box-sizing: border-box;
+  margin-bottom: 2%;
 }
 
 .messageBox:focus-within {
@@ -161,7 +162,7 @@
   outline: none;
   border: none;
   padding: 10px;
-  color: white;
+  color: rgb(19, 19, 19);
   resize: none;
   overflow-y: auto;
   box-sizing: border-box;
@@ -201,11 +202,27 @@
   stroke: white;
 }
 
-@media (max-width: 768px) {
+.remainingText {
+  margin-bottom: 2%;
+  color: #4a429c;
+}
+
+@media (max-width: 1200px) {
+  .nameInput,
+  .optionGroup {
+    width: 50%;
+  }
+}
+
+@media (max-width: 992px) {
   .inputGroup {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+  }
+  .nameInput,
+  .optionGroup {
+    width: 75%;
   }
 }
