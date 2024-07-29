@@ -1,6 +1,6 @@
 import classes from "./FormPage.module.css";
 
-import Form from "../components/Form/Form";
+import Form from "../../components/Form/Form";
 
 export default function FormPage() {
   return (
