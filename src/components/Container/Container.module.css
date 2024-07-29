@@ -1,0 +1,22 @@
+.containerBg {
+  background: #fff url("../../assets/container_bg.png");
+  display: flex;
+  justify-content: center;
+}
+
+.listResults {
+  overflow: visible;
+  position: relative;
+  padding: 1em 1em;
+  width: 70%;
+  background-color: #fff;
+}
+
+.results {
+  list-style: none;
+  padding: 0 1em;
+  margin: 0 0;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
