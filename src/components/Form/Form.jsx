@@ -61,38 +61,6 @@ export default function Form() {
       </div>
       {/* Message Text Area ---- {500 - message.length}*/}
       <div className={classes.messageBox}>
-        <div className={classes.fileUploadWrapper}>
-          <label htmlFor="file">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 337 337"
-            >
-              <circle
-                strokeWidth="20"
-                stroke="#6c6c6c"
-                fill="none"
-                r="158.5"
-                cy="168.5"
-                cx="168.5"
-              ></circle>
-              <path
-                strokeLinecap="round"
-                strokeWidth="25"
-                stroke="#6c6c6c"
-                d="M167.759 79V259"
-              ></path>
-              <path
-                strokeLinecap="round"
-                strokeWidth="25"
-                stroke="#6c6c6c"
-                d="M79 167.138H259"
-              ></path>
-            </svg>
-            <span className={classes.tooltip}>Add an image</span>
-          </label>
-          <input type="file" name="file" className={classes.file} />
-        </div>
         <textarea
           required=""
           placeholder="Message..."

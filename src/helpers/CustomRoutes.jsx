@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Navigate } from "react-router-dom";
-import { isAuthenticated, hasPermission } from "./utils/auth";
+import { isAuthenticated, hasPermission } from "../utils/auth";
 
 // PrivateRoute: Redirects to login if not authenticated
 const PrivateRoute = ({ element }) => {

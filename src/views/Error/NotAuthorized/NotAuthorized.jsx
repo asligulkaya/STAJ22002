@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import classes from "./NotAuthorized.module.css";
-import notAuthorized from "../../assets/notAuthorized.png";
+import classes from "../Error.module.css";
+import notAuthorized from "../../../assets/notAuthorized.png";
 
 const NotAuthorized = () => (
   <div className="d-flex align-items-center" style={{ height: "90vh" }}>

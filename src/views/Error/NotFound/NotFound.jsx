@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import classes from "./NotFound.module.css";
-import notFound from "../../assets/notFound.png";
+import classes from "../Error.module.css";
+import notFound from "../../../assets/notFound.png";
 
 const NotFound = () => (
   <div className="d-flex align-items-center" style={{ height: "90vh" }}>

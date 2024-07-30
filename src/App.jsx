@@ -4,17 +4,18 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./App.css";
-import { PrivateRoute, RoleBasedRoute } from "./CustomRoutes";
+import { PrivateRoute, RoleBasedRoute } from "./helpers/CustomRoutes";
 import FormPage from "./views/FormPage/FormPage";
 import Login from "./views/Login/Login";
-import NotAuthorized from "./views/NotAuthorized/NotAuthorized";
-import NotFound from "./views/NotFound/NotFound";
+import NotAuthorized from "./views/Error/NotAuthorized/NotAuthorized";
+import NotFound from "./views/Error/NotFound/NotFound";
 import Home from "./views/Home/Home";
 
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         {/* Private Route */}
         <Route
@@ -29,7 +30,6 @@ function App() {
         {/* Authorization and Not Found Routes */}
         <Route path="/not-authorized" element={<NotAuthorized />} />
         <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Home />} />
       </Routes>
     </Router>
   );
