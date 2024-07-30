@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import loginSVG from "../../assets/login.svg";
 import classes from "./Login.module.css";
@@ -6,22 +7,28 @@ import classes from "./Login.module.css";
 import { login } from "../../utils/auth";
 
 export default function Login() {
-  const [enteredValues, setEnteredValues] = useState({
+  const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  function handleInputChange(identifier, value) {
-    setEnteredValues((prevValues) => ({ ...prevValues, [identifier]: value }));
-  }
+  const handleChange = (e) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   async function handleSubmit(event) {
     event.preventDefault();
     try {
-      const response = await login(enteredValues);
+      const response = await login(credentials);
       console.log(response);
+      navigate("/");
     } catch (error) {
-      console.error("Login failed: ", error);
+      setError(error.message);
     }
   }
 
@@ -37,21 +44,23 @@ export default function Login() {
               <input
                 className={classes.inputs}
                 type="text"
-                id="email"
+                name="username"
+                value={credentials.username}
                 required
-                onChange={(e) => handleInputChange("username", e.target.value)}
+                onChange={handleChange}
               />
-              <label htmlFor="email" className={classes.labels}>
+              <label htmlFor="username" className={classes.labels}>
                 Username
               </label>
             </div>
             <div className={classes.inputBlock}>
               <input
                 className={classes.inputs}
+                name="password"
                 type="password"
-                id="pass"
+                value={credentials.password}
                 required
-                onChange={(e) => handleInputChange("password", e.target.value)}
+                onChange={handleChange}
               />
               <label htmlFor="pass" className={classes.labels}>
                 Password
@@ -64,6 +73,7 @@ export default function Login() {
               <button className={classes.button}>Submit</button>
             </div>
           </form>
+          {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
         <div className={classes.right}>
           <div className={classes.img}>

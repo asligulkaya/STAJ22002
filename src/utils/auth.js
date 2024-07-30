@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 export function setToken(token) {
   localStorage.setItem("token", token);
@@ -15,6 +16,26 @@ export function removeToken() {
 export function isAuthenticated() {
   const token = getToken();
   if (!token) {
+    return false;
+  }
+
+  try {
+    const decoded = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    return decoded.exp > currentTime;
+  } catch (error) {
+    return false;
+  }
+}
+
+export function hasPermission(requiredRole) {
+  const token = getToken();
+  if (!token) return false;
+
+  try {
+    const decodedToken = jwtDecode(token);
+    return decodedToken.role === requiredRole;
+  } catch (error) {
     return false;
   }
 }
@@ -40,3 +61,17 @@ export async function login(credentials) {
 export function logout() {
   removeToken();
 }
+
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      if (error.response.status === 401) {
+        window.location.href = "/login";
+      } else if (error.response.status === 403) {
+        window.location.href = "/not-authorized";
+      }
+    }
+    return Promise.reject(error);
+  }
+);
