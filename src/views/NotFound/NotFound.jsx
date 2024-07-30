@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
+import classes from "./NotFound.module.css";
+import notFound from "../../assets/notFound.png";
 
 const NotFound = () => (
-  <div>
-    <h1>404 - Page Not Found</h1>
-    <p>Sorry, the page you are looking for does not exist.</p>
-    <Link to="/">Go to Homepage</Link>
+  <div className="d-flex align-items-center" style={{ height: "90vh" }}>
+    <section className="w-50">
+      <h1 className={classes.header404}>404</h1>
+      <h2>Page Not Found</h2>
+      <p>Sorry, the page you are looking for does not exist.</p>
+      <Link to="/">Go to Homepage</Link>
+    </section>
+    <section className="w-50">
+      <img src={notFound} alt="not found" style={{ width: "600px" }} />
+    </section>
   </div>
 );
 
