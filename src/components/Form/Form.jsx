@@ -1,12 +1,69 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
 import classes from "./Form.module.css";
 
 export default function Form() {
+  const [countries, setCountries] = useState([]);
+  const [name, setName] = useState("");
+  const [country, setCountry] = useState("");
+  const [gender, setGender] = useState("");
+  const [message, setMessage] = useState("");
+
+  const [remainingChars, setRemainingChars] = useState(500);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5165/api/countries")
+      .then((response) => {
+        setCountries(response.data.data.countries);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the countries!", error);
+      });
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const formData = {
+      name,
+      country,
+      gender,
+      message,
+    };
+
+    axios
+      .post("http://localhost:5165/api/message/add", formData)
+      .then((response) => {
+        console.log(response.data);
+        setName("");
+        setCountry("");
+        setGender("");
+        setMessage("");
+        setRemainingChars(500);
+      })
+      .catch((error) => {
+        console.error("There was an error sending the message!", error);
+      });
+  };
+
+  const handleMessageChange = (event) => {
+    const text = event.target.value;
+    setMessage(text);
+    setRemainingChars(500 - text.length);
+  };
+
   return (
-    <div className={`${classes.formContainer} container w-75`}>
-      <div className={`d-flex justify-content-center ${classes.inputGroup}`}>
+    <form
+      className={`${classes.formContainer} container w-75`}
+      onSubmit={handleSubmit}
+    >
+      <div className={`d-flex ${classes.inputGroup}`}>
         {/* Name Input */}
-        <div className="col-12 col-md-9 justify-content-center d-flex align-items-center my-3 p-3">
-          <label htmlFor="name" className="m-3">
+        <div
+          className={`${classes.formInputs} col-6 justify-content-center d-flex align-items-center my-3 p-3`}
+        >
+          <label htmlFor="name" className={`${classes.formLabels} m-3`}>
             Name:
           </label>
           <input
@@ -14,19 +71,28 @@ export default function Form() {
             type="text"
             placeholder="Name"
             maxLength="50"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </div>
         {/* Country Input */}
-        <div className="col-12 col-md-9 justify-content-center d-flex align-items-center my-3 p-3">
-          <label htmlFor="country" className="m-3">
+        <div
+          className={`${classes.formInputs} col-6 justify-content-center d-flex align-items-center my-3 p-3`}
+        >
+          <label htmlFor="country" className={`${classes.formLabels} m-3`}>
             Country:
           </label>
           <select
             id="inputState"
             className={`${classes.optionGroup} form-control`}
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
           >
-            <option selected>Choose...</option>
-            <option>...</option>
+            {countries.map((country, index) => (
+              <option key={index} value={country}>
+                {country}
+              </option>
+            ))}
           </select>
         </div>
       </div>
@@ -39,7 +105,10 @@ export default function Form() {
             type="radio"
             className={classes.radioButton__input}
             id="radio1"
-            name="radio-group"
+            name="gender"
+            value="Man"
+            checked={gender === "Man"}
+            onChange={(e) => setGender(e.target.value)}
           />
           <label className={classes.radioButton__label} htmlFor="radio1">
             <span className={classes.radioButton__custom}></span>
@@ -51,7 +120,10 @@ export default function Form() {
             type="radio"
             className={classes.radioButton__input}
             id="radio2"
-            name="radio-group"
+            name="gender"
+            value="Woman"
+            checked={gender === "Woman"}
+            onChange={() => setGender("Woman")}
           />
           <label className={classes.radioButton__label} htmlFor="radio2">
             <span className={classes.radioButton__custom}></span>
@@ -59,7 +131,7 @@ export default function Form() {
           </label>
         </div>
       </div>
-      {/* Message Text Area ---- {500 - message.length}*/}
+      {/* Message Text Area */}
       <div className={classes.messageBox}>
         <textarea
           required=""
@@ -67,9 +139,11 @@ export default function Form() {
           className={classes.messageInput}
           rows="3"
           maxLength="500"
+          value={message}
+          onChange={handleMessageChange}
         ></textarea>
 
-        <button className={classes.sendButton}>
+        <button className={classes.sendButton} type="submit">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -89,7 +163,9 @@ export default function Form() {
           </svg>
         </button>
       </div>
-      <small className={classes.remainingText}>Remaining Characters:</small>
-    </div>
+      <small className={classes.remainingText}>
+        Remaining Characters: {remainingChars}
+      </small>
+    </form>
   );
 }

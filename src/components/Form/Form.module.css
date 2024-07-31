@@ -160,4 +160,17 @@
   .optionGroup {
     width: 75%;
   }
+
+  .formInputs {
+    width: 75%;
+  }
+}
+
+@media (max-width: 500px) {
+  .formLabels {
+    display: none;
+  }
+  .formInputs {
+    width: 100%;
+  }
 }
