@@ -1,0 +1,22 @@
+.profile {
+  border-radius: 50%;
+}
+
+.dropdownToggle::after {
+  display: none;
+}
+
+.dropdownToggle:focus {
+  border: none;
+}
+
+.dropdownMenu {
+  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.19);
+  background: transparent;
+}
+
+@media (max-width: 992px) {
+  .dropdownMenu {
+    display: inline-block !important;
+  }
+}
