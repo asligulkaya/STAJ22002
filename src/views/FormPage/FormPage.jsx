@@ -8,7 +8,7 @@ export default function FormPage() {
     <div>
       <Header />
       <div className={`${classes.formGroup} container`}>
-        <h1>Enter your message please</h1>
+        <h1 className={classes.messageHeader}>Enter your message please</h1>
         <Form />
       </div>
     </div>

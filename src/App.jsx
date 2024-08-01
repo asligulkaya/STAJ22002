@@ -11,6 +11,7 @@ import Login from "./views/Login/Login";
 import NotAuthorized from "./views/Error/NotAuthorized/NotAuthorized";
 import NotFound from "./views/Error/NotFound/NotFound";
 import Home from "./views/Home/Home";
+import Header from "./components/Header/Header";
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
         {/* Role-Based Route */}
         <Route
           path="/admin"
-          element={<RoleBasedRoute element={<Login />} requiredRole="admin" />} // This element should be changed
+          element={<RoleBasedRoute element={<Header />} requiredRole="admin" />} // This element should be changed
         />
         {/* Authorization and Not Found Routes */}
         <Route path="*" element={<NotFound />} />

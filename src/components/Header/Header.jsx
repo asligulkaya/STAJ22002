@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import logo from "../../assets/contactLogo.png";
 import logoutIcon from "../../assets/logout.svg";
 import classes from "./Header.module.css";
-import { logout } from "../../utils/auth";
+import { logout, hasPermission } from "../../utils/auth";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
+  const isAdmin = hasPermission("admin");
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -58,11 +59,25 @@ export default function Header() {
               Home
             </Link>
           </li>
-          <li className="nav-item">
-            <Link className="nav-link" to="#">
-              Link
+          <li className="nav-item active">
+            <Link className="nav-link" to="/">
+              Messages
             </Link>
           </li>
+          {isAdmin && (
+            <>
+              <li className="nav-item">
+                <Link className="nav-link" to="#">
+                  Users
+                </Link>
+              </li>
+              <li className="nav-item">
+                <Link className="nav-link" to="#">
+                  Reports
+                </Link>
+              </li>
+            </>
+          )}
         </ul>
         <div className="dropdown">
           <Link
@@ -84,12 +99,9 @@ export default function Header() {
             }`}
             aria-labelledby="dropdownMenuLink"
           >
-            <h3
-              className={`${classes.dropdownMenuLinks} dropdown-item`}
-              href="/"
-            >
+            <h5 className={`dropdown-item text-center`} href="/">
               User name
-            </h3>
+            </h5>
             <button
               className="dropdown-item"
               href="/"

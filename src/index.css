@@ -1,5 +1,4 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -23,7 +22,8 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-  background-color: #F6F5F2;
+  background-color: #f6f5f2;
+  font-family: "Raleway", sans-serif;
 }
 
 h1 {

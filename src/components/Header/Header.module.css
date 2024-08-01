@@ -14,7 +14,7 @@
 
 .dropdownMenu {
   box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 8px 0 rgba(0, 0, 0, 0.19);
-  background: transparent;
+  background: #F6F5F2;
 }
 
 @media (max-width: 992px) {

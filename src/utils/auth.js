@@ -26,12 +26,28 @@ export function removeToken() {
   localStorage.removeItem("token");
 }
 
+// export function isAuthenticated() {
+//   const token = getToken();
+//   if (!token) {
+//     return false;
+//   }
+
+//   try {
+//     const decoded = jwtDecode(token);
+//     const currentTime = Date.now() / 1000;
+//     return decoded.exp > currentTime;
+//   } catch (error) {
+//     return false;
+//   }
+// }
+
 export function hasPermission(requiredRole) {
   const token = getToken();
   if (!token) return false;
-
+  console.log(token);
   try {
     const decodedToken = jwtDecode(token);
+    console.log(decodedToken);
     return decodedToken.role === requiredRole;
   } catch (error) {
     return false;
@@ -107,6 +123,18 @@ export async function checkLoginStatus() {
   const token = getToken();
   if (!token) {
     console.log("No token found.");
+    return false;
+  }
+
+  try {
+    const decoded = jwtDecode(token);
+    const currentTime = Date.now() / 1000;
+    if (decoded.exp <= currentTime) {
+      console.log("Token has expired.");
+      return false;
+    }
+  } catch (error) {
+    console.error("Token decoding failed: ", error.message);
     return false;
   }
 
