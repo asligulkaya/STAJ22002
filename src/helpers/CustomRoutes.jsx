@@ -1,15 +1,15 @@
 /* eslint-disable react/prop-types */
 import { Navigate } from "react-router-dom";
-import { isAuthenticated, hasPermission } from "../utils/auth";
+import { checkLoginStatus, hasPermission } from "../utils/auth";
 
 // PrivateRoute: Redirects to login if not authenticated
 const PrivateRoute = ({ element }) => {
-  return isAuthenticated() ? element : <Navigate to="/login" />;
+  return checkLoginStatus() ? element : <Navigate to="/login" />;
 };
 
 // RoleBasedRoute: Checks both authentication and required roles
 const RoleBasedRoute = ({ element, requiredRole }) => {
-  return isAuthenticated() ? (
+  return checkLoginStatus() ? (
     hasPermission(requiredRole) ? (
       element
     ) : (

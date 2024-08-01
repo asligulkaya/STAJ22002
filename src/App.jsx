@@ -29,8 +29,8 @@ function App() {
           element={<RoleBasedRoute element={<Login />} requiredRole="admin" />} // This element should be changed
         />
         {/* Authorization and Not Found Routes */}
-        <Route path="/not-authorized" element={<NotAuthorized />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/not-authorized" element={<NotAuthorized />} />
       </Routes>
     </Router>
   );

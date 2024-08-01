@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/contactLogo.png";
-import logout from "../../assets/logout.svg";
+import logoutIcon from "../../assets/logout.svg";
 import classes from "./Header.module.css";
+import { logout } from "../../utils/auth";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
+
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
@@ -15,8 +17,19 @@ export default function Header() {
     setOpenProfile(!openProfile);
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      console.log("Logged out successfully");
+    } catch (error) {
+      console.error("Failed to logout: ", error.message);
+    }
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-transparent">
+    <nav
+      className={`${classes.nav} navbar navbar-expand-lg navbar-light bg-transparent`}
+    >
       <button
         className="navbar-toggler"
         type="button"
@@ -77,13 +90,14 @@ export default function Header() {
             >
               User name
             </h3>
-            <Link
+            <button
               className="dropdown-item"
               href="/"
               style={{ textAlign: "center" }}
+              onClick={handleLogout}
             >
-              Logout <img src={logout} width="20px" />
-            </Link>
+              Logout <img src={logoutIcon} width="20px" />
+            </button>
           </div>
         </div>
       </div>
