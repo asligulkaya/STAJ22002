@@ -66,9 +66,11 @@ export async function login(credentials) {
       }
     );
     // console.log(response.data)
-    setToken(response.data.data.token);
+    const userData = response.data.data;
+    localStorage.setItem("user", JSON.stringify(userData.user));
+    setToken(userData.token);
     return {
-      token: response.data.data.token,
+      token: userData.token,
     };
   } catch (error) {
     throw new Error(
@@ -94,6 +96,7 @@ export async function logout() {
 
     if (response.status === 200) {
       removeToken();
+      localStorage.removeItem("user");
       console.log("Logout successful");
       window.location.href = "/login";
     }

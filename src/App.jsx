@@ -12,6 +12,7 @@ import NotAuthorized from "./views/Error/NotAuthorized/NotAuthorized";
 import NotFound from "./views/Error/NotFound/NotFound";
 import Home from "./views/Home/Home";
 import Header from "./components/Header/Header";
+import Messages from "./views/Messages/Messages";
 
 function App() {
   return (
@@ -23,6 +24,10 @@ function App() {
         <Route
           path="/contact-form"
           element={<PrivateRoute element={<FormPage />} />}
+        />
+        <Route
+          path="/messages"
+          element={<PrivateRoute element={<Messages />} />}
         />
         {/* Role-Based Route */}
         <Route

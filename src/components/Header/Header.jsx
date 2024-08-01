@@ -9,6 +9,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const isAdmin = hasPermission("admin");
+  const storedUserData = JSON.parse(localStorage.getItem("user"));
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -60,7 +61,7 @@ export default function Header() {
             </Link>
           </li>
           <li className="nav-item active">
-            <Link className="nav-link" to="/">
+            <Link className="nav-link" to="/messages">
               Messages
             </Link>
           </li>
@@ -90,7 +91,10 @@ export default function Header() {
             aria-expanded="false"
             onClick={toggleProfile}
           >
-            <img src="https://placehold.co/50" className="rounded-circle" />
+            <img
+              src={storedUserData.base64Photo || "https://placehold.co/50"}
+              className={`rounded-circle ${classes.profile}`}
+            />
           </Link>
 
           <div
@@ -100,7 +104,7 @@ export default function Header() {
             aria-labelledby="dropdownMenuLink"
           >
             <h5 className={`dropdown-item text-center`} href="/">
-              User name
+              {storedUserData.username}
             </h5>
             <button
               className="dropdown-item"
