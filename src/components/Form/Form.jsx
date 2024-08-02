@@ -106,8 +106,8 @@ export default function Form() {
             className={classes.radioButton__input}
             id="radio1"
             name="gender"
-            value="Male"
-            checked={gender === "Male"}
+            value="male"
+            checked={gender === "male"}
             onChange={(e) => setGender(e.target.value)}
           />
           <label className={classes.radioButton__label} htmlFor="radio1">
@@ -121,9 +121,9 @@ export default function Form() {
             className={classes.radioButton__input}
             id="radio2"
             name="gender"
-            value="Female"
-            checked={gender === "Female"}
-            onChange={() => setGender("Female")}
+            value="female"
+            checked={gender === "female"}
+            onChange={(e) => setGender(e.target.value)}
           />
           <label className={classes.radioButton__label} htmlFor="radio2">
             <span className={classes.radioButton__custom}></span>

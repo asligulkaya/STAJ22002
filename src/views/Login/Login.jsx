@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import loginSVG from "../../assets/login.svg";
+import loginSVG from "../../assets/svg/login.svg";
 import classes from "./Login.module.css";
 
 import { login } from "../../utils/auth";
@@ -26,7 +26,7 @@ export default function Login() {
     try {
       const response = await login(credentials);
       console.log(response);
-      navigate("/");
+      navigate("/")
     } catch (error) {
       setError(error.message);
     }

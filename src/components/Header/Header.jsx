@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../../assets/contactLogo.png";
-import logoutIcon from "../../assets/logout.svg";
+import logoutIcon from "../../assets/svg/logout.svg";
 import classes from "./Header.module.css";
 import { logout, hasPermission } from "../../utils/auth";
 

@@ -13,6 +13,7 @@ import NotFound from "./views/Error/NotFound/NotFound";
 import Home from "./views/Home/Home";
 import Header from "./components/Header/Header";
 import Messages from "./views/Messages/Messages";
+import MessagesDetail from "./views/Messages/MessagesDetail";
 
 function App() {
   return (
@@ -29,10 +30,19 @@ function App() {
           path="/messages"
           element={<PrivateRoute element={<Messages />} />}
         />
+        <Route
+          path="/messages/:id"
+          element={<PrivateRoute element={<MessagesDetail />} />}
+        />
         {/* Role-Based Route */}
         <Route
           path="/admin"
-          element={<RoleBasedRoute element={<Header />} requiredRole="admin" />} // This element should be changed
+          element={
+            <RoleBasedRoute
+              element={<Header />}
+              requiredRole={["admin", "reader"]}
+            />
+          } // This element should be changed
         />
         {/* Authorization and Not Found Routes */}
         <Route path="*" element={<NotFound />} />
