@@ -2,14 +2,16 @@ import { useState, useEffect } from "react";
 import { formatDate, truncateMessage } from "../../helpers/format";
 import read from "../../assets/svg/read.svg";
 import unread from "../../assets/svg/unread.svg";
-import { getToken } from "../../utils/auth";
+import { getToken, hasPermission } from "../../utils/auth";
 import axios from "axios";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
+import DeleteBtn from "../DeleteBtn/DeleteBtn";
 
 export default function MessagesTable() {
   const [messages, setMessages] = useState([]);
   const token = getToken();
+  const isAdmin = hasPermission("admin");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +34,13 @@ export default function MessagesTable() {
   const handleRowClick = (id) => {
     navigate(`/messages/${id}`);
   };
+
+  const handleDelete = (messageId) => {
+    setMessages((prevMessages) =>
+      prevMessages.filter((msg) => msg.id !== messageId)
+    );
+  };
+
   return (
     <div>
       <h1 className="mt-5">Messages</h1>
@@ -44,6 +53,7 @@ export default function MessagesTable() {
             <th>Country</th>
             <th>Read</th>
             <th>Date</th>
+            {isAdmin && <th>Delete</th>}
           </tr>
         </thead>
         <tbody>
@@ -67,6 +77,11 @@ export default function MessagesTable() {
                 />
               </td>
               <td>{formatDate(msg.creationDate)}</td>
+              {isAdmin && (
+                <td>
+                  <DeleteBtn messageId={msg.id} onDelete={handleDelete} />
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
