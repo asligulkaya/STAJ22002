@@ -1,19 +1,22 @@
 /* eslint-disable react/prop-types */
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
+import "./App.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import "./App.css";
 import { PrivateRoute, RoleBasedRoute } from "./helpers/CustomRoutes";
+
 import FormPage from "./views/FormPage/FormPage";
 import Login from "./views/Login/Login";
 import NotAuthorized from "./views/Error/NotAuthorized/NotAuthorized";
 import NotFound from "./views/Error/NotFound/NotFound";
 import Home from "./views/Home/Home";
-import Header from "./components/Header/Header";
 import Messages from "./views/Messages/Messages";
 import MessagesDetail from "./views/Messages/MessagesDetail";
+import Users from "./views/Users/Users";
+import UsersDetail from "./views/Users/UsersDetail";
+import AddUser from "./views/Users/AddUser";
 
 function App() {
   return (
@@ -21,11 +24,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        {/* Private Route */}
-        <Route
-          path="/contact-form"
-          element={<PrivateRoute element={<FormPage />} />}
-        />
+        <Route path="/contact-form" element={<FormPage />} />
+        {/* Private Routes */}
         <Route
           path="/messages"
           element={<PrivateRoute element={<Messages />} />}
@@ -34,15 +34,22 @@ function App() {
           path="/messages/:id"
           element={<PrivateRoute element={<MessagesDetail />} />}
         />
-        {/* Role-Based Route */}
+        {/* Role-Based Routes */}
         <Route
-          path="/admin"
+          path="/users"
+          element={<RoleBasedRoute element={<Users />} requiredRole="admin" />}
+        />
+        <Route
+          path="/user/:id"
           element={
-            <RoleBasedRoute
-              element={<Header />}
-              requiredRole={["admin", "reader"]}
-            />
-          } // This element should be changed
+            <RoleBasedRoute element={<UsersDetail />} requiredRole="admin" />
+          }
+        />
+        <Route
+          path="/add-user"
+          element={
+            <RoleBasedRoute element={<AddUser />} requiredRole="admin" />
+          }
         />
         {/* Authorization and Not Found Routes */}
         <Route path="*" element={<NotFound />} />
