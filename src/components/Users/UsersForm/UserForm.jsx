@@ -55,7 +55,6 @@ export default function UserForm({ user, onUpdate }) {
             if (response.status === 200) {
               console.log("User updated", response.data);
               const updatedUser = response.data.data.user;
-              localStorage.setItem("user", JSON.stringify(updatedUser));
               onUpdate(updatedUser);
             }
           } catch (error) {
