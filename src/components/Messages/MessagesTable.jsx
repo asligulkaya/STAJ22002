@@ -31,8 +31,26 @@ export default function MessagesTable() {
       });
   }, [token]);
 
-  const handleRowClick = (id) => {
-    navigate(`/messages/${id}`);
+  const handleRowClick = async (id) => {
+    try {
+      const response = await axios.post(
+        `http://localhost:5165/api/message/read/${id}`,
+        {},
+        {
+          headers: {
+            token,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.status === 200) {
+        console.log("Marked as read");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      navigate(`/messages/${id}`);
+    }
   };
 
   const handleDelete = (messageId) => {
