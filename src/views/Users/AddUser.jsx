@@ -4,6 +4,7 @@ import { resizeImage } from "../../helpers/format";
 import { getToken } from "../../utils/auth";
 
 import Header from "../../components/Header/Header";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
 export default function AddUser() {
   const token = getToken();
@@ -11,6 +12,8 @@ export default function AddUser() {
   const [password, setPassword] = useState("");
   const [base64Photo, setBase64Photo] = useState("");
   const [photoPreview, setPhotoPreview] = useState("");
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -53,9 +56,20 @@ export default function AddUser() {
             );
             if (response.status === 200) {
               console.log("Reader added", response.data);
+              setSnackbarMessage("Reader added successfully!");
+              setIsSnackbarVisible(true);
+              setTimeout(() => {
+                setIsSnackbarVisible(false);
+              }, 3000);
             }
           } catch (error) {
             console.log("Error: ", error);
+            setSnackbarMessage("Error adding reader");
+            setIsSnackbarVisible(true);
+
+            setTimeout(() => {
+              setIsSnackbarVisible(false);
+            }, 3000);
           }
         };
         reader.onerror = (error) => {
@@ -146,6 +160,7 @@ export default function AddUser() {
             </div>
           )}
         </section>
+        <Snackbar message={snackbarMessage} isVisible={isSnackbarVisible} />
       </div>
     </>
   );

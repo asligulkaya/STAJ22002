@@ -7,9 +7,12 @@ import axios from "axios";
 import "./styles.css";
 import { useNavigate } from "react-router-dom";
 import DeleteBtn from "../DeleteBtn/DeleteBtn";
+import Snackbar from "../Snackbar/Snackbar";
 
 export default function MessagesTable() {
   const [messages, setMessages] = useState([]);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
   const token = getToken();
   const isAdmin = hasPermission("admin");
   const navigate = useNavigate();
@@ -57,6 +60,12 @@ export default function MessagesTable() {
     setMessages((prevMessages) =>
       prevMessages.filter((msg) => msg.id !== messageId)
     );
+    setSnackbarMessage("Message deleted successfully!");
+    setIsSnackbarVisible(true);
+
+    setTimeout(() => {
+      setIsSnackbarVisible(false);
+    }, 3000);
   };
 
   return (
@@ -104,6 +113,7 @@ export default function MessagesTable() {
           ))}
         </tbody>
       </table>
+      <Snackbar message={snackbarMessage} isVisible={isSnackbarVisible} />
     </div>
   );
 }

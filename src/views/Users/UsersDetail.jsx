@@ -6,11 +6,14 @@ import { getToken } from "../../utils/auth";
 import Header from "../../components/Header/Header";
 import UsersCard from "../../components/Users/UsersCard/UsersCard";
 import UserForm from "../../components/Users/UsersForm/UserForm";
+import Snackbar from "../../components/Snackbar/Snackbar";
 
 export default function UsersDetail({ initialUser }) {
   const { id } = useParams();
   const [user, setUser] = useState(initialUser);
   const [error, setError] = useState(null);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
   const token = getToken();
 
   useEffect(() => {
@@ -33,6 +36,12 @@ export default function UsersDetail({ initialUser }) {
 
   const handleUserUpdate = (updatedUser) => {
     setUser(updatedUser);
+    setSnackbarMessage("User updated successfully!");
+    setIsSnackbarVisible(true);
+
+    setTimeout(() => {
+      setIsSnackbarVisible(false);
+    }, 3000);
   };
 
   return (
@@ -47,6 +56,7 @@ export default function UsersDetail({ initialUser }) {
         <section className="w-50 d-flex flex-column align-items-center justify-content-center">
           {user && <UserForm user={user} onUpdate={handleUserUpdate} />}
         </section>
+        <Snackbar message={snackbarMessage} isVisible={isSnackbarVisible} />
       </div>
     </>
   );
