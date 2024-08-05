@@ -1,0 +1,14 @@
+/* src/components/Plane.css */
+
+.plane-container {
+  left: 100px;
+  top: 25%;
+  transform-origin: center;
+  transition: transform cubic-bezier(0.1, 0, 0, 0.1);
+  position: absolute;
+}
+
+img {
+  width: 60vh;
+  height: 60vh;
+}
