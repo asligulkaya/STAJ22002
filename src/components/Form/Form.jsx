@@ -76,7 +76,7 @@ export default function Form() {
         className={`${classes.formContainer} container w-75`}
         onSubmit={handleSubmit}
       >
-        <div className={`d-flex ${classes.inputGroup}`}>
+        <div className={`d-flex justify-content-center ${classes.inputGroup}`}>
           {/* Name Input */}
           <div
             className={`${classes.formInputs} col-6 justify-content-center d-flex align-items-center my-3 p-3`}

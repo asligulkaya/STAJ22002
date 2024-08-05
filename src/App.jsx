@@ -11,20 +11,19 @@ import FormPage from "./views/FormPage/FormPage";
 import Login from "./views/Login/Login";
 import NotAuthorized from "./views/Error/NotAuthorized/NotAuthorized";
 import NotFound from "./views/Error/NotFound/NotFound";
-import Home from "./views/Home/Home";
 import Messages from "./views/Messages/Messages";
 import MessagesDetail from "./views/Messages/MessagesDetail";
 import Users from "./views/Users/Users";
 import UsersDetail from "./views/Users/UsersDetail";
 import AddUser from "./views/Users/AddUser";
+import Reports from "./views/Reports/Reports";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/contact-form" element={<FormPage />} />
+        <Route path="/" element={<FormPage />} />
         {/* Private Routes */}
         <Route
           path="/messages"
@@ -49,6 +48,12 @@ function App() {
           path="/add-user"
           element={
             <RoleBasedRoute element={<AddUser />} requiredRole="admin" />
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <RoleBasedRoute element={<Reports />} requiredRole="admin" />
           }
         />
         {/* Authorization and Not Found Routes */}
