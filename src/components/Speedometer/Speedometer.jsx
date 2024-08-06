@@ -2,7 +2,7 @@
 import './Speedometer.css';
 
 const Speedometer = ({ speed }) => {
-  const angle = (speed / 100) * 180; // Convert speed to angle
+  const angle = (speed / 100) * 180; 
 
   return (
     <div className="speedometer-container">

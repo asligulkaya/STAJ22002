@@ -21,7 +21,6 @@ function App() {
     };
 
     ws.onmessage = (message) => {
-      // Parse the received message and update the corresponding state
       const { eventName, data } = JSON.parse(message.data);
       switch (eventName) {
         case "PLANE_ANGLE":
@@ -49,30 +48,24 @@ function App() {
     setSocket(ws);
   };
 
-  // Function to handle the "Start" button click
   const handleStart = () => {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      // Send "START" command to the backend
       socket.send("START");
     } else {
       console.error("WebSocket is not open.");
     }
   };
 
-  // Function to handle the "Stop" button click
   const handleStop = () => {
     if (socket && socket.readyState === WebSocket.OPEN) {
-      // Send "STOP" command to the backend
       socket.send("STOP");
     } else {
       console.error("WebSocket is not open.");
     }
   };
 
-  // Connect WebSocket on component mount
   useEffect(() => {
     connectWebSocket();
-    // Cleanup on unmount
     return () => {
       if (socket) {
         socket.close();
