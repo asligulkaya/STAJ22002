@@ -1,0 +1,6 @@
+.column {
+  display: inline-block;
+  margin: 10px;
+  position: relative;
+  width: 110px;
+}

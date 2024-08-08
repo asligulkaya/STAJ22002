@@ -1,0 +1,38 @@
+.card {
+  width: 100px;
+  height: 140px;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  border-radius: 8px;
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  position: absolute;
+}
+
+.card.hidden {
+  background-color: grey;
+}
+
+.cardImage {
+  width: inherit;
+}
+
+.hidden-card {
+  top: 5px;
+  position: relative;
+  z-index: 1;
+}
+
+.visible-card {
+  position: relative;
+  top: 5px;
+  z-index: 10; /* Ensure visible cards are on top */
+  cursor: pointer; /* Indicates interactability */
+}
+
+.cardDiv {
+  height: 0;
+}

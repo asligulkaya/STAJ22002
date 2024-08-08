@@ -1,11 +1,22 @@
-import "./App.css";
+import { useState } from "react";
+import Home from "./components/Home";
+import Game from "./components/Game";
 
-function App() {
+const App = () => {
+  const [gameStarted, setGameStarted] = useState(false);
+
+  const startGame = () => setGameStarted(true);
+  const exitGame = () => setGameStarted(false);
+
   return (
-    <>
-      <div></div>
-    </>
+    <div className="App">
+      {gameStarted ? (
+        <Game exitGame={exitGame} />
+      ) : (
+        <Home startGame={startGame} />
+      )}
+    </div>
   );
-}
+};
 
 export default App;
