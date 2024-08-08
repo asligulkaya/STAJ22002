@@ -1,19 +1,23 @@
 /* eslint-disable react/prop-types */
 import Card from "./Card";
+import CardPlaceholder from "./CardPlaceholder";
 
 const Column = ({ cards, onCardClick }) => (
   <div className="column">
-    {cards.map((card, index) => (
-      <Card
-        key={index}
-        card={card}
-        onClick={() => onCardClick(index)}
-        style={{
-          top: `${index * 2}px`,
-          zIndex: card.hidden ? index : 1000,
-        }}
-      />
-    ))}
+    <CardPlaceholder>
+      {cards.map((card, index) => (
+        <Card
+          key={index}
+          card={card}
+          onClick={() => onCardClick(index)}
+          style={{
+            top: `${index * 10}px`,
+            zIndex: card.hidden ? index : 1000,
+            margin: "0"
+          }}
+        />
+      ))}
+    </CardPlaceholder>
   </div>
 );
 

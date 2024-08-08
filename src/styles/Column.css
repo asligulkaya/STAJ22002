@@ -4,3 +4,11 @@
   position: relative;
   width: 110px;
 }
+
+.cards-column {
+  width: 100px;
+  height: 140px;
+  margin: 0 1em;
+  border-radius: 5px;
+  border: 2px solid darkslategrey;
+}
