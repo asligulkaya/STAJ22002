@@ -8,8 +8,9 @@ import CardPlaceholder from "./CardPlaceholder";
 import Card from "./Card";
 
 const Game = ({ level, exitGame }) => {
-  const [columns, setColumns] = useState([]);
-  const [stock, setStock] = useState([]);
+  const { columns: initialColumns, stock: initialStock } = initializeGame();
+  const [columns, setColumns] = useState(initialColumns);
+  const [stock, setStock] = useState(initialStock);
 
   useEffect(() => {
     const { columns, stock } = initializeGame(level);
@@ -22,8 +23,51 @@ const Game = ({ level, exitGame }) => {
   const pauseGame = () => setIsPaused(true);
   const continueGame = () => setIsPaused(false);
 
-  const handleCardClick = (columnIndex, cardIndex) => {
-    console.log(`Clicked card at column ${columnIndex}, card ${cardIndex}`);
+  const handleCardClick = (columnIndex) => {
+    if (stock.length > 0) {
+      const newColumns = [...columns];
+      const card = stock.pop();
+      card.hidden = false;
+      newColumns[columnIndex].push(card);
+      setColumns(newColumns);
+      setStock([...stock]);
+    }
+  };
+
+  const handleDrop = (e, targetColumnIndex) => {
+    const cardIndex = e.dataTransfer.getData("cardIndex");
+    const sourceColumnIndex = parseInt(
+      e.dataTransfer.getData("sourceColumnIndex")
+    );
+
+    if (sourceColumnIndex !== targetColumnIndex) {
+      const newColumns = [...columns];
+      const cardToMove = newColumns[sourceColumnIndex].splice(cardIndex, 1)[0];
+      newColumns[targetColumnIndex].push(cardToMove);
+      setColumns(newColumns);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleStockClick = () => {
+    const newColumns = [...columns];
+    const newStock = [...stock];
+
+    if (newStock.length >= 10) {
+      newColumns.forEach((column) => {
+        const card = newStock.pop();
+        card.hidden = false;
+        column.push(card);
+      });
+    } else {
+      console.log("Stock is empty!");
+    }
+
+    setColumns(newColumns);
+    setStock(newStock);
   };
 
   return (
@@ -46,7 +90,9 @@ const Game = ({ level, exitGame }) => {
               card={card}
               style={{
                 margin: "0",
+                cursor: "pointer",
               }}
+              onClick={handleStockClick}
             />
           ))}
         </CardPlaceholder>
@@ -62,6 +108,8 @@ const Game = ({ level, exitGame }) => {
             key={columnIndex}
             cards={cards}
             onCardClick={(cardIndex) => handleCardClick(columnIndex, cardIndex)}
+            onDrop={(e) => handleDrop(e, columnIndex)}
+            onDragOver={handleDragOver}
           />
         ))}
       </div>

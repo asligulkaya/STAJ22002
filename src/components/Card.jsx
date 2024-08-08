@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import "../styles/Card.css";
-const Card = ({ card, onClick, style }) => {
+const Card = ({ card, onClick, style, draggable, onDragStart }) => {
   const cardImage = card.hidden
     ? "/icons/card-backgrounds/classic_blue.png"
     : `/icons/${card.suit}/${card.value}.png`;
@@ -13,6 +13,8 @@ const Card = ({ card, onClick, style }) => {
         className={`card ${card.hidden ? "hidden-card" : "visible-card"}`}
         style={style}
         onClick={onClick}
+        draggable={draggable}
+        onDragStart={onDragStart}
       />
     </div>
   );
