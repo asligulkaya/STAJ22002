@@ -1,13 +1,28 @@
 /* eslint-disable react/prop-types */
 import "../styles/Card.css";
+import { useDrag } from "react-dnd";
 
-const Card = ({ card, onClick, style, draggable, onDragStart }) => {
+const Card = ({
+  card,
+  columnIndex,
+  cardIndex,
+  onClick,
+  style,
+  draggable,
+  onDragStart,
+}) => {
+  const [, drag] = useDrag({
+    type: "CARD",
+    item: { columnIndex, cardIndex },
+    canDrag: () => draggable,
+  });
+
   const cardImage = card.hidden
     ? "/icons/card-backgrounds/classic_blue.png"
     : `/icons/${card.suit}/${card.value}.png`;
 
   return (
-    <div className="cardDiv">
+    <div ref={drag} className="cardDiv">
       <img
         src={cardImage}
         alt={`${card.value} of ${card.suit}`}

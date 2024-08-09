@@ -34,34 +34,45 @@ const Game = ({ level, exitGame }) => {
     }
   };
 
-  const handleDrop = (e, targetColumnIndex) => {
-    e.preventDefault();
-    const cardIndex = e.dataTransfer.getData("cardIndex");
-    const sourceColumnIndex = e.dataTransfer.getData("sourceColumnIndex");
-
-    console.log("cardIndex:", cardIndex);
-    console.log("sourceColumnIndex:", sourceColumnIndex);
-    console.log("columns:", columns);
-
-    if (sourceColumnIndex !== null && sourceColumnIndex !== targetColumnIndex) {
+  const handleDrop = (item, targetColumnIndex) => {
+    console.log('Dropped item:', item);
+    console.log('Target column index:', targetColumnIndex);
+  
+    const { columnIndex: sourceColumnIndex, cardIndex } = item;
+  
+    if (sourceColumnIndex === undefined || targetColumnIndex === undefined) {
+      console.error('Source or Target column index is undefined');
+      return;
+    }
+  
+    if (sourceColumnIndex !== targetColumnIndex) {
       const newColumns = [...columns];
-      const cardToMove = newColumns[sourceColumnIndex].splice(cardIndex, 1)[0];
-
-      if (cardToMove) {
-        newColumns[targetColumnIndex].push(cardToMove);
-
-        if (newColumns[sourceColumnIndex].length > 0) {
-          newColumns[sourceColumnIndex][
-            newColumns[sourceColumnIndex].length - 1
-          ].hidden = false;
-        }
-
-        setColumns(newColumns);
-      } else {
-        console.error("Card to move not found or undefined");
+  
+      if (!Array.isArray(newColumns[sourceColumnIndex])) {
+        console.error(`Column at index ${sourceColumnIndex} is not an array`);
+        return;
       }
+  
+      const cardsToMove = newColumns[sourceColumnIndex].slice(cardIndex);
+  
+      if (!Array.isArray(cardsToMove)) {
+        console.error('cardsToMove is not an array');
+        return;
+      }
+  
+      newColumns[targetColumnIndex] = [...(newColumns[targetColumnIndex] || []), ...cardsToMove];
+      newColumns[sourceColumnIndex] = newColumns[sourceColumnIndex].slice(0, cardIndex);
+  
+      if (newColumns[sourceColumnIndex].length > 0) {
+        newColumns[sourceColumnIndex][
+          newColumns[sourceColumnIndex].length - 1
+        ].hidden = false;
+      }
+  
+      setColumns(newColumns);
     }
   };
+  
 
   const handleDragOver = (e) => {
     e.preventDefault();
