@@ -35,16 +35,31 @@ const Game = ({ level, exitGame }) => {
   };
 
   const handleDrop = (e, targetColumnIndex) => {
+    e.preventDefault();
     const cardIndex = e.dataTransfer.getData("cardIndex");
-    const sourceColumnIndex = parseInt(
-      e.dataTransfer.getData("sourceColumnIndex")
-    );
+    const sourceColumnIndex = e.dataTransfer.getData("sourceColumnIndex");
 
-    if (sourceColumnIndex !== targetColumnIndex) {
+    console.log("cardIndex:", cardIndex);
+    console.log("sourceColumnIndex:", sourceColumnIndex);
+    console.log("columns:", columns);
+
+    if (sourceColumnIndex !== null && sourceColumnIndex !== targetColumnIndex) {
       const newColumns = [...columns];
       const cardToMove = newColumns[sourceColumnIndex].splice(cardIndex, 1)[0];
-      newColumns[targetColumnIndex].push(cardToMove);
-      setColumns(newColumns);
+
+      if (cardToMove) {
+        newColumns[targetColumnIndex].push(cardToMove);
+
+        if (newColumns[sourceColumnIndex].length > 0) {
+          newColumns[sourceColumnIndex][
+            newColumns[sourceColumnIndex].length - 1
+          ].hidden = false;
+        }
+
+        setColumns(newColumns);
+      } else {
+        console.error("Card to move not found or undefined");
+      }
     }
   };
 
@@ -56,14 +71,11 @@ const Game = ({ level, exitGame }) => {
     const newColumns = [...columns];
     const newStock = [...stock];
 
-    if (newStock.length >= 10) {
-      newColumns.forEach((column) => {
-        const card = newStock.pop();
-        card.hidden = false;
-        column.push(card);
-      });
-    } else {
-      console.log("Stock is empty!");
+    for (let i = 0; i < newColumns.length; i++) {
+      if (newStock.length === 0) break;
+      const card = newStock.pop();
+      card.hidden = false;
+      newColumns[i].push(card);
     }
 
     setColumns(newColumns);
@@ -107,6 +119,7 @@ const Game = ({ level, exitGame }) => {
           <Column
             key={columnIndex}
             cards={cards}
+            columnIndex={columnIndex}
             onCardClick={(cardIndex) => handleCardClick(columnIndex, cardIndex)}
             onDrop={(e) => handleDrop(e, columnIndex)}
             onDragOver={handleDragOver}
