@@ -6,15 +6,19 @@ import Game from "./components/Game";
 
 const App = () => {
   const [gameStarted, setGameStarted] = useState(false);
+  const [suits, setSuits] = useState(1);
 
-  const startGame = () => setGameStarted(true);
+  const startGame = (selectedSuits) => {
+    setSuits(selectedSuits);
+    setGameStarted(true);
+  };
   const exitGame = () => setGameStarted(false);
 
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="App">
         {gameStarted ? (
-          <Game exitGame={exitGame} />
+          <Game suits={suits} exitGame={exitGame} />
         ) : (
           <Home startGame={startGame} />
         )}

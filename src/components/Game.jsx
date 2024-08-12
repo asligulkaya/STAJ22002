@@ -7,18 +7,18 @@ import Column from "./Column";
 import CardPlaceholder from "./CardPlaceholder";
 import Card from "./Card";
 
-const Game = ({ level, exitGame }) => {
-  const { columns: initialColumns, stock: initialStock } = initializeGame();
+const Game = ({ suits, exitGame }) => {
+  const { columns: initialColumns, stock: initialStock } = initializeGame(suits);
   const [columns, setColumns] = useState(initialColumns);
   const [stock, setStock] = useState(initialStock);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    const { columns, stock } = initializeGame(level);
+    const { columns, stock } = initializeGame(suits);
     setColumns(columns);
     setStock(stock);
-  }, [level]);
+  }, [suits]);
 
-  const [isPaused, setIsPaused] = useState(false);
 
   const pauseGame = () => setIsPaused(true);
   const continueGame = () => setIsPaused(false);

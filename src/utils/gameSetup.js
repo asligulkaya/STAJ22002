@@ -1,7 +1,7 @@
 import { createDeck, shuffleDeck } from "./decks";
 
-const initializeGame = () => {
-  const deck = shuffleDeck(createDeck());
+const initializeGame = (suits) => {
+  const deck = shuffleDeck(createDeck(suits));
 
   const columns = Array.from({ length: 10 }, (_, index) => {
     const numberOfCards = index < 4 ? 6 : 5;

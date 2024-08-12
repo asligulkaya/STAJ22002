@@ -1,5 +1,6 @@
-export const createDeck = () => {
-  const suits = ["hearts", "diamonds", "clubs", "spades"];
+export const createDeck = (suits) => {
+  const allSuits = ["spades", "hearts", "clubs", "diamonds"];
+  const selectedSuits = allSuits.slice(0, suits);
   const values = [
     "1",
     "2",
@@ -17,8 +18,8 @@ export const createDeck = () => {
   ];
 
   let deck = [];
-  for (let i = 0; i < 2; i++) {
-    suits.forEach((suit) => {
+  for (let i = 0; i < 2 * (4 / suits); i++) {
+    selectedSuits.forEach((suit) => {
       values.forEach((value) => {
         deck.push({ suit, value, hidden: true });
       });
