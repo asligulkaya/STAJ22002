@@ -24,7 +24,7 @@ const Column = ({ cards, columnIndex, onDrop, onDragOver, columns, suits }) => {
             columns={columns}
             suits={suits}
             style={{
-              top: `${index * 10}px`,
+              top: `${index * 20}px`,
               zIndex: card.hidden ? index : 1000,
               margin: "0",
             }}

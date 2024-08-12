@@ -13,6 +13,7 @@ const Game = ({ suits, exitGame }) => {
   const [columns, setColumns] = useState(initialColumns);
   const [stock, setStock] = useState(initialStock);
   const [isPaused, setIsPaused] = useState(false);
+  const [completedSequences, setCompletedSequences] = useState([]);
 
   useEffect(() => {
     const { columns, stock } = initializeGame(suits);
@@ -32,6 +33,25 @@ const Game = ({ suits, exitGame }) => {
       setColumns(newColumns);
       setStock([...stock]);
     }
+  };
+
+  const checkForCompleteSequence = (column) => {
+    if (column.length < 13) return false;
+    const sequence = column.slice(-13);
+
+    for (let i = 0; i < 13; i++) {
+      if (parseInt(sequence[i].value, 10) !== 13 - i) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  const moveCompletedSequenceToContainer = (newColumns, targetColumnIndex) => {
+    const completedSequence = newColumns[targetColumnIndex].splice(-13);
+    console.log("Completed sequence moved:", completedSequence);
+    setCompletedSequences([...completedSequences, completedSequence]);
+    setColumns(newColumns);
   };
 
   const handleDrop = (item, targetColumnIndex) => {
@@ -72,6 +92,13 @@ const Game = ({ suits, exitGame }) => {
           newColumns[sourceColumnIndex][
             newColumns[sourceColumnIndex].length - 1
           ].hidden = false;
+        }
+
+        const completeSequence = checkForCompleteSequence(
+          newColumns[targetColumnIndex]
+        );
+        if (completeSequence) {
+          moveCompletedSequenceToContainer(newColumns, targetColumnIndex);
         }
 
         setColumns(newColumns);
@@ -127,8 +154,12 @@ const Game = ({ suits, exitGame }) => {
           ))}
         </CardPlaceholder>
         <div className="cards-container">
-          {Array.from({ length: 8 }, (_, index) => (
-            <CardPlaceholder key={index} />
+          {completedSequences.map((sequence, index) => (
+            <CardPlaceholder key={index}>
+              {sequence.map((card, idx) => (
+                <Card key={idx} card={card} style={{ margin: "0" }} />
+              ))}
+            </CardPlaceholder>
           ))}
         </div>
       </div>
