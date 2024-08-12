@@ -8,7 +8,8 @@ import CardPlaceholder from "./CardPlaceholder";
 import Card from "./Card";
 
 const Game = ({ suits, exitGame }) => {
-  const { columns: initialColumns, stock: initialStock } = initializeGame(suits);
+  const { columns: initialColumns, stock: initialStock } =
+    initializeGame(suits);
   const [columns, setColumns] = useState(initialColumns);
   const [stock, setStock] = useState(initialStock);
   const [isPaused, setIsPaused] = useState(false);
@@ -18,7 +19,6 @@ const Game = ({ suits, exitGame }) => {
     setColumns(columns);
     setStock(stock);
   }, [suits]);
-
 
   const pauseGame = () => setIsPaused(true);
   const continueGame = () => setIsPaused(false);
@@ -35,44 +35,51 @@ const Game = ({ suits, exitGame }) => {
   };
 
   const handleDrop = (item, targetColumnIndex) => {
-    console.log('Dropped item:', item);
-    console.log('Target column index:', targetColumnIndex);
-  
     const { columnIndex: sourceColumnIndex, cardIndex } = item;
-  
+
     if (sourceColumnIndex === undefined || targetColumnIndex === undefined) {
-      console.error('Source or Target column index is undefined');
+      console.error("Source or Target column index is undefined");
       return;
     }
-  
+
     if (sourceColumnIndex !== targetColumnIndex) {
       const newColumns = [...columns];
-  
-      if (!Array.isArray(newColumns[sourceColumnIndex])) {
-        console.error(`Column at index ${sourceColumnIndex} is not an array`);
-        return;
+      const sourceColumn = newColumns[sourceColumnIndex];
+      const targetColumn = newColumns[targetColumnIndex];
+      const cardsToMove = sourceColumn.slice(cardIndex);
+      const topCardInTargetColumn = targetColumn[targetColumn.length - 1];
+
+      const isDescendingOrder = (topCard, movingCard) => {
+        return (
+          parseInt(topCard.value, 10) === parseInt(movingCard.value, 10) + 1
+        );
+      };
+
+      const isValidDrop = () => {
+        if (topCardInTargetColumn === undefined) {
+          return true;
+        }
+
+        const movingCard = cardsToMove[0];
+        return isDescendingOrder(topCardInTargetColumn, movingCard);
+      };
+
+      if (isValidDrop()) {
+        newColumns[targetColumnIndex] = [...targetColumn, ...cardsToMove];
+        newColumns[sourceColumnIndex] = sourceColumn.slice(0, cardIndex);
+
+        if (newColumns[sourceColumnIndex].length > 0) {
+          newColumns[sourceColumnIndex][
+            newColumns[sourceColumnIndex].length - 1
+          ].hidden = false;
+        }
+
+        setColumns(newColumns);
+      } else {
+        console.log("Invalid move");
       }
-  
-      const cardsToMove = newColumns[sourceColumnIndex].slice(cardIndex);
-  
-      if (!Array.isArray(cardsToMove)) {
-        console.error('cardsToMove is not an array');
-        return;
-      }
-  
-      newColumns[targetColumnIndex] = [...(newColumns[targetColumnIndex] || []), ...cardsToMove];
-      newColumns[sourceColumnIndex] = newColumns[sourceColumnIndex].slice(0, cardIndex);
-  
-      if (newColumns[sourceColumnIndex].length > 0) {
-        newColumns[sourceColumnIndex][
-          newColumns[sourceColumnIndex].length - 1
-        ].hidden = false;
-      }
-  
-      setColumns(newColumns);
     }
   };
-  
 
   const handleDragOver = (e) => {
     e.preventDefault();
@@ -134,6 +141,8 @@ const Game = ({ suits, exitGame }) => {
             onCardClick={(cardIndex) => handleCardClick(columnIndex, cardIndex)}
             onDrop={(e) => handleDrop(e, columnIndex)}
             onDragOver={handleDragOver}
+            columns={columns}
+            suits={suits}
           />
         ))}
       </div>

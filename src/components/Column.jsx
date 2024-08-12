@@ -3,7 +3,7 @@ import Card from "./Card";
 import CardPlaceholder from "./CardPlaceholder";
 import { useDrop } from "react-dnd";
 
-const Column = ({ cards, columnIndex, onDrop, onDragOver }) => {
+const Column = ({ cards, columnIndex, onDrop, onDragOver, columns, suits }) => {
   const [, drop] = useDrop({
     accept: "CARD",
     drop: (item) => {
@@ -21,6 +21,8 @@ const Column = ({ cards, columnIndex, onDrop, onDragOver }) => {
             card={card}
             columnIndex={columnIndex}
             cardIndex={index}
+            columns={columns}
+            suits={suits}
             style={{
               top: `${index * 10}px`,
               zIndex: card.hidden ? index : 1000,

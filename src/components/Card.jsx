@@ -10,12 +10,29 @@ const Card = ({
   style,
   draggable,
   onDragStart,
+  columns,
+  suits,
 }) => {
   const [, drag] = useDrag({
     type: "CARD",
     item: { columnIndex, cardIndex },
-    canDrag: () => draggable,
+    canDrag: () => draggable && isCorrectlyStacked(),
   });
+
+  const isCorrectlyStacked = () => {
+    let currentCard = columns[columnIndex][cardIndex];
+    for (let i = cardIndex + 1; i < columns[columnIndex].length; i++) {
+      const nextCard = columns[columnIndex][i];
+      if (
+        parseInt(currentCard.value, 10) !== parseInt(nextCard.value, 10) + 1 ||
+        (suits > 1 && currentCard.suit !== nextCard.suit)
+      ) {
+        return false;
+      }
+      currentCard = nextCard;
+    }
+    return true;
+  };
 
   const cardImage = card.hidden
     ? "/icons/card-backgrounds/classic_blue.png"
