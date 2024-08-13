@@ -5,7 +5,7 @@ import * as THREE from "three";
 
 const BouncingBall = ({ color, speed, soundEnabled, isPlaying }) => {
   const mountRef = useRef(null);
-  const sound = useRef(null);
+  const sound = useRef(new Audio("/sound.mp3"));
 
   useEffect(() => {
     const scene = new THREE.Scene();
@@ -34,16 +34,11 @@ const BouncingBall = ({ color, speed, soundEnabled, isPlaying }) => {
     let positionX = 0;
     const ballRadius = 1;
 
-    sound.current = new Audio("/sound.mp3");
-
     const animate = function () {
       if (isPlaying) {
         if (positionX > 7 - ballRadius || positionX < -7 + ballRadius) {
           speedX = -speedX;
-          if (soundEnabled && sound.current) {
-            sound.current.currentTime = 0;
-            sound.current.play();
-          }
+          if (soundEnabled) sound.current.play();
         }
         positionX += speedX;
         ball.position.x = positionX;
@@ -59,6 +54,20 @@ const BouncingBall = ({ color, speed, soundEnabled, isPlaying }) => {
       mountRef.current.removeChild(renderer.domElement);
     };
   }, [color, speed, soundEnabled, isPlaying]);
+
+  useEffect(() => {
+    if (!isPlaying) {
+      sound.current.pause();
+      sound.current.currentTime = 0;
+    }
+  }, [isPlaying]);
+
+  useEffect(() => {
+    if (!soundEnabled) {
+      sound.current.pause();
+      sound.current.currentTime = 0;
+    }
+  }, [soundEnabled]);
 
   return <div ref={mountRef}></div>;
 };
