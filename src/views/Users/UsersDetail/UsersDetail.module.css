@@ -1,0 +1,10 @@
+.usersDetailDiv {
+  height: 65vh;
+}
+
+@media (max-width: 767px) {
+  .usersDetailDiv {
+    flex-direction: column;
+    align-items: center;
+  }
+}

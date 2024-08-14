@@ -14,7 +14,7 @@ import NotFound from "./views/Error/NotFound/NotFound";
 import Messages from "./views/Messages/Messages";
 import MessagesDetail from "./views/Messages/MessagesDetail";
 import Users from "./views/Users/Users";
-import UsersDetail from "./views/Users/UsersDetail";
+import UsersDetail from "./views/Users/UsersDetail/UsersDetail";
 import AddUser from "./views/Users/AddUser";
 import Reports from "./views/Reports/Reports";
 

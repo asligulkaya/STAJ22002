@@ -1,12 +1,13 @@
 /* eslint-disable react/prop-types */
+import classes from "./UsersDetail.module.css";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import { getToken } from "../../utils/auth";
-import Header from "../../components/Header/Header";
-import UsersCard from "../../components/Users/UsersCard/UsersCard";
-import UserForm from "../../components/Users/UsersForm/UserForm";
-import Snackbar from "../../components/Snackbar/Snackbar";
+import { getToken } from "../../../utils/auth";
+import Header from "../../../components/Header/Header";
+import UsersCard from "../../../components/Users/UsersCard/UsersCard";
+import UserForm from "../../../components/Users/UsersForm/UserForm";
+import Snackbar from "../../../components/Snackbar/Snackbar";
 
 export default function UsersDetail({ initialUser }) {
   const { id } = useParams();
@@ -48,12 +49,12 @@ export default function UsersDetail({ initialUser }) {
     <>
       <Header />
       <h1>Users Detail</h1>
-      <div className="d-flex" style={{ height: "65vh" }}>
+      <div className={`${classes.usersDetailDiv} d-flex`}>
         <section className="w-50 d-flex flex-column align-items-center justify-content-center">
           {user ? <UsersCard user={user} /> : <p>Loading</p>}
           {error && <p>{error}</p>}
         </section>
-        <section className="w-50 d-flex flex-column align-items-center justify-content-center">
+        <section className="w-md-50 d-flex flex-column align-items-center justify-content-center">
           {user && <UserForm user={user} onUpdate={handleUserUpdate} />}
         </section>
         <Snackbar message={snackbarMessage} isVisible={isSnackbarVisible} />

@@ -20,6 +20,7 @@ ChartJS.register(
 );
 import { getToken } from "../../utils/auth";
 import Header from "../../components/Header/Header";
+import classes from "./Reports.module.css";
 
 const ReportsPage = () => {
   const [messages, setMessages] = useState([]);
@@ -88,16 +89,16 @@ const ReportsPage = () => {
   return (
     <>
       <Header />
+      <h1>Admin Reports</h1>
       <div>
-        <h1>Admin Reports</h1>
-        <div className="d-flex justify-content-between">
-          <section className="w-50">
-            <div className="d-flex flex-column align-items-center">
+        <div className={`${classes.reports}`}>
+          <section style={{ width: "100%", maxWidth: "800px" }}>
+            <div className="d-flex flex-column align-items-center mt-5">
               <h2>Message Count by Country</h2>
               <Bar data={countryData} />
             </div>
           </section>
-          <section style={{ width: "35%" }}>
+          <section className="genderSection">
             <div>
               <h2>Message Count by Gender</h2>
               <Pie data={genderData} />
