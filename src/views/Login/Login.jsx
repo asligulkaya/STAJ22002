@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import loginSVG from "../../assets/svg/login.svg";
 import classes from "./Login.module.css";
-
 import { login } from "../../utils/auth";
+import { validateLogin } from "../../helpers/validation";
 
 export default function Login() {
   const [credentials, setCredentials] = useState({
@@ -12,23 +12,38 @@ export default function Login() {
     password: "",
   });
   const [error, setError] = useState(null);
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setCredentials({
       ...credentials,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: null,
+    }));
   };
 
   async function handleSubmit(event) {
     event.preventDefault();
+
+    const validationErrors = validateLogin(credentials);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
       const response = await login(credentials);
       console.log(response);
-      navigate("/")
+      navigate("/");
     } catch (error) {
       setError(error.message);
+      console.log(error.message);
     }
   }
 
@@ -40,31 +55,40 @@ export default function Login() {
       <div className={classes.container}>
         <div className={classes.left}>
           <form className={classes.form} onSubmit={handleSubmit} method="post">
+            {error && <p style={{ color: "red" }}>{error}</p>}
             <div className={classes.inputBlock}>
               <input
-                className={classes.inputs}
+                className={`${classes.inputs}`}
                 type="text"
                 name="username"
-                value={credentials.username}
                 required
+                value={credentials.username}
                 onChange={handleChange}
               />
               <label htmlFor="username" className={classes.labels}>
                 Username
               </label>
+              {errors.username && (
+                <small className="text-danger">{errors.username}</small>
+              )}
             </div>
             <div className={classes.inputBlock}>
               <input
                 className={classes.inputs}
                 name="password"
                 type="password"
-                value={credentials.password}
                 required
+                value={credentials.password}
                 onChange={handleChange}
               />
               <label htmlFor="pass" className={classes.labels}>
                 Password
               </label>
+              {errors.password && (
+                <small id="passwordError" className="text-danger">
+                  {errors.password}
+                </small>
+              )}
             </div>
             <div className={classes.inputBlock}>
               <span className={classes.forgot}>
@@ -73,7 +97,6 @@ export default function Login() {
               <button className={classes.button}>Submit</button>
             </div>
           </form>
-          {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
         <div className={classes.right}>
           <div className={classes.img}>

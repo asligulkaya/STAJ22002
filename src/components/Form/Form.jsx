@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { validateForm } from "../../helpers/validation";
 import axios from "axios";
 import classes from "./Form.module.css";
 import Snackbar from "../Snackbar/Snackbar";
@@ -13,6 +14,8 @@ export default function Form() {
   const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
 
   const [remainingChars, setRemainingChars] = useState(500);
+
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     axios
@@ -35,6 +38,17 @@ export default function Form() {
       message,
     };
 
+    const validationErrors = validateForm(formData, [
+      "name",
+      "country",
+      "gender",
+      "message",
+    ]);
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     axios
       .post("http://localhost:5165/api/message/add", formData)
       .then((response) => {
@@ -44,6 +58,7 @@ export default function Form() {
         setGender("");
         setMessage("");
         setRemainingChars(500);
+        setErrors({});
 
         setSnackbarMessage("Form submitted successfully!");
         setIsSnackbarVisible(true);
@@ -64,10 +79,20 @@ export default function Form() {
       });
   };
 
+  const handleChange = (setter, field) => (event) => {
+    setter(event.target.value);
+    if (errors[field]) {
+      setErrors((prevErrors) => ({ ...prevErrors, [field]: null }));
+    }
+  };
+
   const handleMessageChange = (event) => {
     const text = event.target.value;
     setMessage(text);
     setRemainingChars(500 - text.length);
+    if (errors.message) {
+      setErrors((prevErrors) => ({ ...prevErrors, message: null }));
+    }
   };
 
   return (
@@ -90,8 +115,11 @@ export default function Form() {
               placeholder="Name"
               maxLength="50"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={handleChange(setName, "name")}
             />
+            {errors.name && (
+              <small className="text-danger">{errors.name}</small>
+            )}
           </div>
           {/* Country Input */}
           <div
@@ -104,7 +132,7 @@ export default function Form() {
               id="inputState"
               className={`${classes.optionGroup} form-control`}
               value={country}
-              onChange={(e) => setCountry(e.target.value)}
+              onChange={handleChange(setCountry, "country")}
             >
               {countries.map((country, index) => (
                 <option key={index} value={country}>
@@ -112,6 +140,9 @@ export default function Form() {
                 </option>
               ))}
             </select>
+            {errors.country && (
+              <small className="text-danger">{errors.country}</small>
+            )}
           </div>
         </div>
         {/* Gender Input */}
@@ -126,7 +157,7 @@ export default function Form() {
               name="gender"
               value="male"
               checked={gender === "male"}
-              onChange={(e) => setGender(e.target.value)}
+              onChange={handleChange(setGender, "gender")}
             />
             <label className={classes.radioButton__label} htmlFor="radio1">
               <span className={classes.radioButton__custom}></span>
@@ -141,13 +172,16 @@ export default function Form() {
               name="gender"
               value="female"
               checked={gender === "female"}
-              onChange={(e) => setGender(e.target.value)}
+              onChange={handleChange(setGender, "gender")}
             />
             <label className={classes.radioButton__label} htmlFor="radio2">
               <span className={classes.radioButton__custom}></span>
               FEMALE
             </label>
           </div>
+          {errors.gender && (
+            <small className="text-danger">{errors.gender}</small>
+          )}
         </div>
         {/* Message Text Area */}
         <div className={classes.messageBox}>
@@ -160,6 +194,9 @@ export default function Form() {
             value={message}
             onChange={handleMessageChange}
           ></textarea>
+          {errors.message && (
+            <small className="text-danger">{errors.message}</small>
+          )}
 
           <button className={classes.sendButton} type="submit">
             <svg

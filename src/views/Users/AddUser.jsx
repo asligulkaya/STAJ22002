@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { resizeImage } from "../../helpers/format";
 import { getToken } from "../../utils/auth";
+import { validateForm } from "../../helpers/validation";
 
 import Header from "../../components/Header/Header";
 import Snackbar from "../../components/Snackbar/Snackbar";
@@ -14,6 +15,8 @@ export default function AddUser() {
   const [photoPreview, setPhotoPreview] = useState("");
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [isSnackbarVisible, setIsSnackbarVisible] = useState(false);
+
+  const [errors, setErrors] = useState({});
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -28,6 +31,15 @@ export default function AddUser() {
 
   const handleAddUser = async (e) => {
     e.preventDefault();
+
+    const formData = { username, password };
+    const validationErrors = validateForm(formData, ["username", "password"]);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     if (base64Photo) {
       try {
         const resizedImageBlob = await resizeImage(base64Photo, 500, 500, 1);
@@ -83,6 +95,13 @@ export default function AddUser() {
     }
   };
 
+  const handleChange = (setter, field) => (event) => {
+    setter(event.target.value);
+    if (errors[field]) {
+      setErrors((prevErrors) => ({ ...prevErrors, [field]: null }));
+    }
+  };
+
   return (
     <>
       <Header />
@@ -100,8 +119,11 @@ export default function AddUser() {
                     placeholder="Username"
                     maxLength="10"
                     value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    onChange={handleChange(setUsername, "username")}
                   />
+                  {errors.username && (
+                    <small className="text-danger">{errors.username}</small>
+                  )}
                 </div>
               </div>
 
@@ -114,8 +136,11 @@ export default function AddUser() {
                     placeholder="Password"
                     maxLength="10"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onChange={handleChange(setPassword, "password")}
                   />
+                  {errors.password && (
+                    <small className="text-danger">{errors.password}</small>
+                  )}
                 </div>
               </div>
 
@@ -133,6 +158,7 @@ export default function AddUser() {
 
               <div className="d-flex align-items-center mb-3 col-9">
                 <label className="font-weight-bold col-3">Photo</label>
+
                 <div className="col-6">
                   <input
                     type="file"
@@ -140,6 +166,9 @@ export default function AddUser() {
                     onChange={handlePhotoChange}
                   />
                 </div>
+                {errors.base64Photo && (
+                  <small className="text-danger">{errors.base64Photo}</small>
+                )}
               </div>
             </div>
 

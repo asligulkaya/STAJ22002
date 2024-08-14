@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/contactLogo.png";
+import logo from "/contactLogo.png";
 import logoutIcon from "../../assets/svg/logout.svg";
 import classes from "./Header.module.css";
 import { logout, hasPermission } from "../../utils/auth";
@@ -27,6 +27,9 @@ export default function Header() {
       console.error("Failed to logout: ", error.message);
     }
   };
+
+  const userPhoto = storedUserData?.base64Photo || "https://placehold.co/50";
+  const username = storedUserData?.username || "Guest";
 
   return (
     <nav
@@ -92,7 +95,7 @@ export default function Header() {
             onClick={toggleProfile}
           >
             <img
-              src={storedUserData.base64Photo || "https://placehold.co/50"}
+              src={userPhoto}
               className={`rounded-circle ${classes.profile}`}
             />
           </Link>
@@ -104,16 +107,18 @@ export default function Header() {
             aria-labelledby="dropdownMenuLink"
           >
             <h5 className={`dropdown-item text-center`} href="/">
-              {storedUserData.username}
+              {username}
             </h5>
-            <button
-              className="dropdown-item"
-              href="/"
-              style={{ textAlign: "center" }}
-              onClick={handleLogout}
-            >
-              Logout <img src={logoutIcon} width="20px" />
-            </button>
+            {storedUserData && (
+              <button
+                className="dropdown-item"
+                href="/"
+                style={{ textAlign: "center" }}
+                onClick={handleLogout}
+              >
+                Logout <img src={logoutIcon} width="20px" />
+              </button>
+            )}
           </div>
         </div>
       </div>

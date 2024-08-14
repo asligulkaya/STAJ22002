@@ -73,6 +73,14 @@ export async function login(credentials) {
       token: userData.token,
     };
   } catch (error) {
+    if (error.response?.data?.error) {
+      const errorMessage =
+        error.response.data.error === "Username does not exist" ||
+        error.response.data.error === "Password is incorrect"
+          ? "Username or password is incorrect"
+          : "Login failed. Please try again.";
+      throw new Error(errorMessage);
+    }
     throw new Error(
       "Login failed: " + (error.response?.data?.message || error.message)
     );
